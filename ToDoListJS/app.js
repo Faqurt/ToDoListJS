@@ -1,27 +1,55 @@
-﻿import React from "react";
-import ReactDOM from "react-dom";
+﻿// Boton eliminar en cada tarea de la lista
+var myNodelist = document.getElementsByTagName("LI");
+var i;
+for (i = 0; i < myNodelist.length; i++) {
+    var span = document.createElement("SPAN");
+    var txt = document.createTextNode("\u00D7");
+    span.className = "close";
+    span.appendChild(txt);
+    myNodelist[i].appendChild(span);
+}
 
-class Greeter extends React.Component {
-
-    constructor(props) {
-        super(props);
-        this.state = { time: new Date() };
-    }
-
-    componentDidMount() {
-        this.interval = setInterval(() => this.setState({ time: new Date() }), 500);
-    }
-
-    componentWillUnmount() {
-        clearInterval(this.interval);
-    }
-
-    render() {
-        return (
-            <div>
-                {this.props.message} <span>{this.state.time.toUTCString()}</span>
-            </div>
-        );
+// Click en el boton de cerrar para ocultar la tarea
+var close = document.getElementsByClassName("close");
+var i;
+for (i = 0; i < close.length; i++) {
+    close[i].onclick = function () {
+        var div = this.parentElement;
+        div.style.display = "none";
     }
 }
-ReactDOM.render(<Greeter message="The time is: " />, document.getElementById("root"));
+
+// "tick" en la tarea lista
+var list = document.querySelector('ul');
+list.addEventListener('click', function (ev) {
+    if (ev.target.tagName === 'LI') {
+        ev.target.classList.toggle('checked');
+    }
+}, false);
+
+// Crear nueva tarea en el lista al tocar boton agregar
+function newElement() {
+    var li = document.createElement("li");
+    var inputValue = document.getElementById("myInput").value;
+    var t = document.createTextNode(inputValue);
+    li.appendChild(t);
+    if (inputValue === '') {
+        alert("Error, ingrese su tarea nuevamente!");
+    } else {
+        document.getElementById("myUL").appendChild(li);
+    }
+    document.getElementById("myInput").value = "";
+
+    var span = document.createElement("SPAN");
+    var txt = document.createTextNode("\u00D7");
+    span.className = "close";
+    span.appendChild(txt);
+    li.appendChild(span);
+
+    for (i = 0; i < close.length; i++) {
+        close[i].onclick = function () {
+            var div = this.parentElement;
+            div.style.display = "none";
+        }
+    }
+}
